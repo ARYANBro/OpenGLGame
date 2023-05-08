@@ -1,6 +1,6 @@
 # OpenGLGame
 
-This proejct requires **glad** library make sure to downlaod vcpkg from https://vcpkg.io/en/
+This proejct requires **glad** library make sure to download vcpkg from https://vcpkg.io/en/
 
 **Also install the glad library by running the following command:**
 
