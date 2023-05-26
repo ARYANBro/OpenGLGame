@@ -10,11 +10,13 @@ This project requires **vcpkg** to install the required libraries
 **Install the following libraries using vcpkg:**
 
 For x64
+
     `vcpkg install glad:x64-windows`
 
     `vcpkg install glm::x64-windows`
 
 For x86
+
     `vcpkg install glad:x86-windows`
-    
+
     `vcpkg install glm::x86-windows`
