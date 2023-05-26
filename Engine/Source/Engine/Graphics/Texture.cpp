@@ -20,7 +20,7 @@ void Engine::Texture::Load(const std::string& filePath)
     stbi_set_flip_vertically_on_load(true);
     stbi_uc* data = stbi_load(filePath.c_str(), &m_Width, &m_Height, &m_Channels, 0);
     if (!data)
-        throw std::runtime_error("Couldn't open texture path, " + filePath);
+        throw TextureLoadError("Couldn't open texture path, " + filePath);
 
     GLenum internalFormat;
     GLenum format;

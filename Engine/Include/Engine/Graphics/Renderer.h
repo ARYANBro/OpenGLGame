@@ -2,10 +2,25 @@
 
 #include <Windows.h>
 
-#include <Engine/Math/MathTypes.h>
+#include <stdexcept>
+#include <glm/glm.hpp>
 
 namespace Engine
 {
+    class FailedToLoadGL : public std::runtime_error
+    {
+    public:
+        FailedToLoadGL(const std::string& what) : std::runtime_error(what) {}
+        FailedToLoadGL(const char* what) : std::runtime_error(what) {}
+    };
+
+    class FailedToLoadWGL : public std::runtime_error
+    {
+    public:
+        FailedToLoadWGL(const std::string& what) : std::runtime_error(what) {}
+        FailedToLoadWGL(const char* what) : std::runtime_error(what) {}
+    };
+
     enum class DrawMode
     {
         Triangles,
@@ -38,8 +53,8 @@ namespace Engine
         void SetFaceCullingMode(FaceCullingMode faceCulling) const;
         void SetFaceWindingOrder(FaceWindingOrder windingOrder) const;
         void SwapBuffers(int vsync) const;
-        void Clear(const struct Math::Vector4& clearColor) const;
-        void SetViewport(const struct Math::Rectangle& size) const;
+        void Clear(const glm::vec4& clearColor) const;
+        void SetViewport(const glm::ivec2& vec2) const;
 
         void DrawArrays(const class VertexArray& vertexArray, const class ShaderProgram& shaderProgram, unsigned int offset, DrawMode mode = DrawMode::Triangles) const;
         void DrawElements(const class VertexArray& vertexArray, const class ShaderProgram& shaderProgram, unsigned int offset, DrawMode mode = DrawMode::Triangles) const;

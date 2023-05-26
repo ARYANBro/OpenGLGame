@@ -6,8 +6,6 @@
 #include <Engine/Graphics/IndexBuffer.h>
 #include <Engine/Graphics/ShaderProgram.h>
 #include <Engine/Debug.h>
-#include <Engine/Math/Rectangle.h>
-#include <Engine/Math/Vector.h>
 
 #include <Windows.h>
 #include <glad/glad.h>
@@ -67,10 +65,10 @@ void Engine::Renderer::Initialize(const Window& window)
         wglMakeCurrent(m_DeviceCtxt, tempCtxt);
 
         if (!gladLoadGL())
-            throw std::runtime_error("Engine::Renderer::Renderer(const Window& window) | gladLoadGL() failed");
+            throw FailedToLoadGL("Engine::Renderer::Renderer(const Window& window) | gladLoadGL() failed");
 
         if (!gladLoadWGL(m_DeviceCtxt))
-            throw std::runtime_error("Engine::Renderer::Renderer(const Window& window) | gladLoadWGL() failed");
+            throw FailedToLoadWGL("Engine::Renderer::Renderer(const Window& window) | gladLoadWGL() failed");
 
         wglMakeCurrent(m_DeviceCtxt, 0);
         wglDeleteContext(tempCtxt);
@@ -162,15 +160,15 @@ void Engine::Renderer::SwapBuffers(int vsync) const
     wglSwapLayerBuffers(m_DeviceCtxt, WGL_SWAP_MAIN_PLANE);
 }
 
-void Engine::Renderer::Clear(const Math::Vector4& clearColor) const
+void Engine::Renderer::Clear(const glm::vec4& clearColor) const
 {
-    glClearColor(clearColor.X, clearColor.Y, clearColor.Z, clearColor.W);
+    glClearColor(clearColor.x, clearColor.y, clearColor.z, clearColor.w);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
 
-void Engine::Renderer::SetViewport(const Math::Rectangle& size) const
+void Engine::Renderer::SetViewport(const glm::ivec2& size) const
 {
-    glViewport(size.Left, size.Top, size.Width, size.Height);
+    glViewport(0, 0, size.x, size.y);
 }
 
 void Engine::Renderer::DrawArrays(const VertexArray& vertexArray, const ShaderProgram& shaderProgram, unsigned int offset, DrawMode drawMode) const

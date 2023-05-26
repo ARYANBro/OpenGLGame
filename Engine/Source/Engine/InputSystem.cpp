@@ -1,7 +1,6 @@
 #include <Engine/InputSystem.h>
 
 #include <Engine/InputListener.h>
-#include <Engine/Math/Vector.h>
 
 #include <Windows.h>
 #include <algorithm>
@@ -31,13 +30,17 @@ void Engine::InputSystem::Update()
     if (m_Listeners.empty())
         return;
         
-    bool result = GetKeyboardState(m_KeyStates);
-    if (!result)
-        return;
 
+    ProcessMouseMovement();
+    ProcessKeyboardInput();
+    ProcessMouseInput();
+}
+
+void Engine::InputSystem::ProcessMouseMovement() noexcept
+{
     POINT c;
     GetCursorPos(&c);
-    Math::Vector2 currCursorPos = { static_cast<float>(c.x), static_cast<float>(c.y) };
+    glm::vec2 currCursorPos = { static_cast<float>(c.x), static_cast<float>(c.y) };
 
     if (currCursorPos != m_PrevMouseLoc)
         std::ranges::for_each(m_Listeners, [deltaMousePos = currCursorPos - m_PrevMouseLoc](Engine::InputListener* listener)
@@ -45,7 +48,15 @@ void Engine::InputSystem::Update()
             listener->OnMouseMove(deltaMousePos);
         });
 
+ 
     m_PrevMouseLoc = currCursorPos;
+}
+
+void Engine::InputSystem::ProcessKeyboardInput() noexcept
+{
+    bool result = GetKeyboardState(m_KeyStates);
+    if (!result)
+        return;
 
     for (unsigned int i = 0; i < 256; i++)
     {
@@ -54,10 +65,39 @@ void Engine::InputSystem::Update()
 
         if (keyIsDown)
             std::ranges::for_each(m_Listeners, [i](Engine::InputListener* listener) { listener->OnKeyDown(i); });
-        else if (keyStateChanged) // Key is not pressed but the key state has changed that means the key has been released
+        else if (keyStateChanged) // Key is not pressed but the state has changed that means the key has been released
             std::ranges::for_each(m_Listeners, [i](Engine::InputListener* listener) { listener->OnKeyUp(i); });
     }
 
     // Store the current state into the previous state
     std::memcpy(m_PreviousKeyStates, m_KeyStates, sizeof(m_PreviousKeyStates));
+}
+
+void Engine::InputSystem::ProcessMouseInput() noexcept
+{
+    // Store the key
+    static constexpr char s_VKKeys[2] = {
+        VK_LBUTTON,
+        VK_RBUTTON
+    };
+
+    for (int i = 0; i < 2; i++)
+    {
+        m_MouseState[i] = GetKeyState(s_VKKeys[i]);
+        bool keyIsDown = m_MouseState[i] & 0x80;
+        bool keyStateChanged = m_PrevMouseState[i] != m_MouseState[i];
+
+        if (keyIsDown)
+        {
+            for (Engine::InputListener* listener : m_Listeners)
+                listener->OnMouseDown(i == 0 ? MouseButton::Left : MouseButton::Right);
+        }
+        else if (keyStateChanged)
+        {
+            for (Engine::InputListener* listener : m_Listeners)
+                listener->OnMouseUp(i == 0 ? MouseButton::Left : MouseButton::Right);
+        }
+    }
+
+    std::memcpy(m_PrevMouseState, m_MouseState, sizeof(m_PrevMouseState)); // Store the current state into the previous state (for next frame)
 }

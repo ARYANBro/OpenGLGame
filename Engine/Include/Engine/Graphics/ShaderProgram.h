@@ -1,11 +1,26 @@
 #pragma once
 
-#include <string>
+#include <glm/glm.hpp>
 
-#include <Engine/Math/MathTypes.h>
+#include <string>
+#include <stdexcept>
 
 namespace Engine
 {
+    class ShaderLinkError : public std::runtime_error
+    {
+    public:
+        ShaderLinkError(const std::string& name) : std::runtime_error(name) {}
+        ShaderLinkError(const char* name) : std::runtime_error(name) {}
+    };
+
+    class ShaderUniformNotFound  : public std::runtime_error
+    {
+    public:
+        ShaderUniformNotFound(const std::string& name) : std::runtime_error(name) {}
+        ShaderUniformNotFound(const char* name) : std::runtime_error(name) {}
+    };
+
     class ShaderProgram
     {
     public:
@@ -20,7 +35,7 @@ namespace Engine
         void SetUniformBufferSlot(const std::string& name, unsigned int slot) const;
 
         void SetFloat(const std::string& name, float value) const;
-        void SetMatrix4(const std::string& name, const Math::Matrix4& value) const;
+        void SetMatrix4(const std::string& name, const glm::mat4& value) const;
 
     private:
         std::string CheckError() const;

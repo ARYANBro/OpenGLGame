@@ -8,24 +8,6 @@
 #include <cassert>
 #include <limits>
 
-// Engine::Buffer::Buffer(BufferType type)
-//     : m_BufferType(type)
-// {
-//     glCreateBuffers(1, &m_ID);
-// }
-
-// Engine::Buffer::Buffer(VertexBufferData data)
-//     : Buffer(BufferType::VertexBuffer)
-// {
-//     SetData(data);
-// }
-
-// Engine::Buffer::Buffer(UniformBufferData data)
-//     : Buffer(BufferType::UniformBuffer)
-// {
-//     SetData(data);
-// }
-
 Engine::Buffer::Buffer()
 {
     glCreateBuffers(1, &m_ID);
@@ -45,9 +27,13 @@ Engine::Buffer::~Buffer() noexcept
 void Engine::Buffer::SetData(const void* data, unsigned int size)
 {
     if (size == std::numeric_limits<unsigned int>::max())
-        throw std::invalid_argument("void Engine::Buffer::SetData(const void* data, unsigned int size) | size is invalid");
+        throw InvalidBufferSize("void Engine::Buffer::SetData(const void* data, unsigned int size) | size is invalid");
+
+    if (m_Data)
+        glNamedBufferSubData(m_ID, 0, size, data); // If data is already created just update it
+    else
+        glNamedBufferData(m_ID, size, data, GL_DYNAMIC_DRAW); // Else create new block of data
+
     m_Data = data;
     m_Size = size;
-
-    glNamedBufferData(m_ID, size, data, GL_DYNAMIC_DRAW);
 }

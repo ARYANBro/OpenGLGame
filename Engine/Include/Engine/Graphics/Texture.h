@@ -1,9 +1,17 @@
 #pragma once
 
 #include <string>
+#include <stdexcept>
 
 namespace Engine
 {
+    class TextureLoadError : public std::runtime_error
+    {
+    public:
+        TextureLoadError(const std::string& message) : std::runtime_error(message) {}
+        TextureLoadError(const char* message) : std::runtime_error(message) {}
+    };
+
     class Texture
     {
     public:

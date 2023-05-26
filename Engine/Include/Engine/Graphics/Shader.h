@@ -2,8 +2,17 @@
 
 #include <string>
 
+#include <stdexcept>
+
 namespace Engine
 {
+    class ShaderCompileError : public std::runtime_error
+    {
+    public:
+        ShaderCompileError(const std::string& message) : std::runtime_error(message) {}
+        ShaderCompileError(const char* message) : std::runtime_error(message) {}
+    };
+
     enum class ShaderType
     {
         VertexShader,

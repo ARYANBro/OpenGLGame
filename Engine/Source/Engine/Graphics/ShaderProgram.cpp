@@ -2,7 +2,6 @@
 
 #include <Engine/Graphics/Shader.h>
 #include <Engine/Debug.h>
-#include <Engine/Math/Matrix4.h>
 
 #include <glad/glad.h>
 
@@ -40,7 +39,7 @@ void Engine::ShaderProgram::Link() const
     glLinkProgram(m_ID);
 
     if (std::string error = CheckError(); !error.empty())
-        throw std::runtime_error("Shader Link Error | " + error);
+        throw ShaderLinkError("Shader Link Error | " + error);
 
     PRINT_INFO("Shader linked successfuly")
 }
@@ -55,10 +54,10 @@ void Engine::ShaderProgram::SetFloat(const std::string& name, float value) const
     glProgramUniform1f(m_ID, GetUniformLocation(name), value);
 }
 
-void Engine::ShaderProgram::SetMatrix4(const std::string& name, const Math::Matrix4& value) const
+void Engine::ShaderProgram::SetMatrix4(const std::string& name, const glm::mat4& value) const
 {
     
-    glProgramUniformMatrix4fv(m_ID, GetUniformLocation(name), 1, GL_TRUE, &value.Matrix[0][0]);
+    glProgramUniformMatrix4fv(m_ID, GetUniformLocation(name), 1, GL_FALSE, &value[0][0]);
 }
 
 std::string Engine::ShaderProgram::CheckError() const
@@ -80,6 +79,6 @@ int Engine::ShaderProgram::GetUniformLocation(const std::string& name) const
 {
     int location = glGetUniformLocation(m_ID, name.c_str());
     if (location == -1)
-        throw std::runtime_error("Shader Error | Could not find uniform \""  + name + "\" location");
+        throw ShaderUniformNotFound("Shader Error | Could not find uniform \""  + name + "\" location");
     return location;
 }

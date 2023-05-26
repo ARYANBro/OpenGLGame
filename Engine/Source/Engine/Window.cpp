@@ -1,6 +1,5 @@
 #include <Engine/Window.h>
 
-#include <Engine/Math/Rectangle.h>
 #include <Engine/Debug.h>
 #include <Engine/Game.h>
 
@@ -79,8 +78,7 @@ void Engine::Window::Init(const std::wstring& windowName, int width, int height)
     );
 
     if (!m_Handle)
-        throw std::runtime_error("Engine::Window::Window(const std::wstring& windowName, int width, int height) | Failed to create a window");
-
+        throw WindowCreationError("Engine::Window::Window(const std::wstring& windowName, int width, int height) | Failed to create a window");
 
     SetWindowLongPtr(m_Handle, GWLP_USERDATA, reinterpret_cast<LONG_PTR>(this));
     ShowWindow(m_Handle, SW_SHOW);
@@ -92,7 +90,7 @@ Engine::Window::~Window() noexcept
     DestroyWindow(m_Handle);
 }
 
-Math::Rectangle Engine::Window::GetViewportSize()
+glm::ivec2 Engine::Window::GetViewportSize()
 {
     RECT rect;
     GetClientRect(m_Handle, &rect);

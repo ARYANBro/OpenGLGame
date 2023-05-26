@@ -34,13 +34,12 @@ namespace Engine
         {
             if (auto component = GetComponent<ComponentType>(); component != nullptr)
                 return component;
-
             ComponentType* component = new ComponentType(*this);
             m_Components.emplace(typeid(ComponentType).hash_code(), std::unique_ptr<ComponentType>(component));
             component->OnBegin();
             return component;
         }
-
+        
         template<typename ComponentType>
         ComponentType* GetComponent() const
         {
@@ -54,10 +53,8 @@ namespace Engine
         bool RemoveComponent()
         {
             ComponentType* component = GetComponent<ComponentType>();
-
             if (!component)
                 component->OnEnd();
-
             auto result = m_ComponentsToRemove.insert(typeid(ComponentType).hash_code());
             return result.second;
         }

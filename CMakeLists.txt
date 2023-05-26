@@ -7,6 +7,7 @@ enable_testing()
 set(CMAKE_CXX_STANDARD 23)
 
 find_package(glad CONFIG REQUIRED)
+find_package(glm CONFIG REQUIRED)
 
 add_subdirectory(Vendor/stb_image)
 
@@ -29,6 +30,7 @@ link_libraries(
     glad::glad
     opengl32
     stb_image
+    glm::glm
 )
     
 add_executable(OpenGLGame ${Source})

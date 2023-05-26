@@ -13,6 +13,13 @@ namespace Engine
     class ShaderProgram;
     class Texture;
 
+    class TextureOverflow : public std::out_of_range
+    {
+    public:
+        TextureOverflow(const std::string& message) : std::out_of_range(message) {}
+        TextureOverflow(const char* message) : std::out_of_range(message) {}
+    };
+
     struct MeshData
     {
         std::vector<float> Verticies;

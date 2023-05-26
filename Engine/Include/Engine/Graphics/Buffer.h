@@ -1,9 +1,17 @@
 #pragma once
 
 #include <memory>
+#include <stdexcept>
 
 namespace Engine
 {
+    class InvalidBufferSize : public std::out_of_range
+    {
+    public:
+        InvalidBufferSize(const std::string& message) : std::out_of_range(message) {}
+        InvalidBufferSize(const char* message) : std::out_of_range(message) {}
+    };
+
     class Buffer
     {
     public:

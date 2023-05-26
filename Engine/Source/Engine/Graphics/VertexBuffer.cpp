@@ -23,7 +23,7 @@ void Engine::VertexBuffer::Unbind() const
 void Engine::VertexBuffer::SetCount(unsigned int count)
 {
     if (count == std::numeric_limits<unsigned int>::max())
-        throw std::invalid_argument("void Engine::VertexBuffer::SetCount(unsigned int count) | count is invalid");
+        throw InvalidBufferSize("void Engine::VertexBuffer::SetCount(unsigned int count) | count is invalid");
 
     m_Count = count;
 }

@@ -29,6 +29,13 @@ void Sandbox::OnBegin()
     mesh = m_Entity2->AddComponent<Engine::MeshComponent>();
     mesh->SetMesh(Engine::MeshComponent::CreateCube());
     mesh->AddTexture(texture);
+
+    m_Entity3 = GetWorld().CreateEntity<Engine::Entity>();
+    transform = m_Entity3->AddComponent<Engine::TransformComponent>();
+    mesh = m_Entity3->AddComponent<Engine::MeshComponent>();
+    mesh->SetMesh(Engine::MeshComponent::CreateCube());
+    mesh->AddTexture(texture);
+    transform->SetTranslation({ 0.0f, 0.0f, 10.0f });
 }
 
 void Sandbox::OnUpdate(const Engine::DeltaTime& deltaTime)
@@ -41,12 +48,12 @@ void Sandbox::OnUpdate(const Engine::DeltaTime& deltaTime)
     float currScale = (std::sin(m_Scale) + 3.0f) * 0.25f; 
 
     Engine::TransformComponent* transform = m_Entity->GetComponent<Engine::TransformComponent>();
-    transform->SetScale({ 1.0f });
+    transform->SetScale(glm::vec3{ 1.0f });
     transform->SetRotation({ m_RotationX, m_RotationY, m_RotationZ });
     transform->SetTranslation({ m_LocationX, 0.0f, m_LocationZ });
 
     transform = m_Entity2->GetComponent<Engine::TransformComponent>();
-    transform->SetScale({ 1.0f });
+    transform->SetScale(glm::vec3{ 1.0f });
     transform->SetRotation({ m_RotationX, m_RotationY, m_RotationZ });
     transform->SetTranslation({ 1.0f, 0.0f, m_LocationZ });
 }
@@ -59,65 +66,14 @@ void Sandbox::OnEnd()
 void Sandbox::OnKeyDown(int key)
 {
     Game3D::OnKeyDown(key);
-
-    const Engine::DeltaTime& deltaTime = GetDeltaTime();
-
-    if (key == 'W')
-    {
-        m_RotationX -= deltaTime * 2;
-        PRINT_INFO("Pressed Key: W");
-    }
-    else if (key == 'A')
-    {
-        m_LocationX -= deltaTime * 2;
-        PRINT_INFO("Pressed Key: A");
-    }
-    else if (key == 'S')
-    {
-        m_RotationX += deltaTime * 2;
-        PRINT_INFO("Pressed Key: S");
-    }
-    else if (key == 'D')
-    {
-        m_LocationX += deltaTime * 2;
-        PRINT_INFO("Pressed Key: D");
-    }
-    else if (key == 'Q')
-    {
-        m_LocationZ -= deltaTime * 2;
-    }
-    else if (key == 'E')
-    {
-        m_LocationZ += deltaTime * 2;
-    }
 }
 
 void Sandbox::OnKeyUp(int key)
 {
     Game3D::OnKeyUp(key);
-
-    if (key == 'W')
-    {
-        PRINT_INFO("Pressed Released: W");
-    }
-    else if (key == 'A')
-    {
-        PRINT_INFO("Pressed Released: A");
-    }
-    else if (key == 'S')
-    {
-        PRINT_INFO("Pressed Released: S");
-    }
-    else if (key == 'D')
-    {
-        PRINT_INFO("Pressed Released: D");
-    }
 }
 
-void Sandbox::OnMouseMove(const Math::Vector2& deltaMousePos)
+void Sandbox::OnMouseMove(const glm::vec2& deltaMouse)
 {
-    Game3D::OnMouseMove(deltaMousePos);
-
-    m_RotationX -= deltaMousePos.Y * GetDeltaTime() * 0.35f;
-    m_RotationY -= deltaMousePos.X * GetDeltaTime() * 0.35f;
+    Game3D::OnMouseMove(deltaMouse);
 }

@@ -8,8 +8,6 @@
 #include <Engine/Graphics/UniformBuffer.h>
 #include <Engine/Graphics/ShaderProgram.h>
 #include <Engine/Graphics/Shader.h>
-#include <Engine/Math/Matrix4.h>
-#include <Engine/Math/Rectangle.h>
 #include <Engine/Debug.h>
 #include <Engine/Entity.h>
 #include <Engine/Logger.h>
@@ -113,7 +111,7 @@ void Engine::Game::Quit()
 void Engine::Game::BeginRender()
 {
     GetRenderer().SetViewport(GetWindow().GetViewportSize());
-    GetRenderer().Clear(Math::Vector4{ 0.05f, 0.05f, 0.055f, 1.0f });
+    GetRenderer().Clear({ 0.05f, 0.05f, 0.055f, 1.0f });
     GetRenderer().SetFaceCullingMode(Engine::FaceCullingMode::Back);
 }
 

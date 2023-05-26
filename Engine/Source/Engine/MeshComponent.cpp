@@ -34,7 +34,7 @@ void Engine::MeshComponent::OnRender()
 
     TransformComponent* transformComponent = m_Entity.GetComponent<TransformComponent>();
     if (transformComponent)
-        m_Shader->SetMatrix4("u_World", transformComponent->GetTransform());
+        m_Shader->SetMatrix4("u_Model", transformComponent->GetTransform());
 
     Game::Get().GetRenderer().DrawElements(*m_VertexArray, *m_Shader, 0);
 
@@ -78,7 +78,7 @@ void Engine::MeshComponent::SetMesh(const MeshData& mesh)
 void Engine::MeshComponent::AddTexture(const std::shared_ptr<Texture>& texture)
 {
     if (m_CurrIndex > 15)
-        throw std::invalid_argument("A Maximum of only 16 textures can be added to a mesh");
+        throw TextureOverflow("A Maxium of only 16 textures can be added to a mesh");
 
     m_Textures[m_CurrIndex++] = texture;
 }

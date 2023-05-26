@@ -1,9 +1,10 @@
 #pragma once
 
-#include "Math/MathTypes.h"
-
+#include <glm/glm.hpp>
 namespace Engine
 {
+    enum class MouseButton;
+
     class InputListener
     {
     public:
@@ -12,6 +13,8 @@ namespace Engine
 
         virtual void OnKeyDown(int key) = 0;
         virtual void OnKeyUp(int key) = 0;
-        virtual void OnMouseMove(const Math::Vector2& deltaMousePos) = 0;
+        virtual void OnMouseMove(const glm::vec2& deltaMousePos) = 0;
+        virtual void OnMouseUp(MouseButton button) = 0;
+        virtual void OnMouseDown(MouseButton button) = 0;
     };
 }

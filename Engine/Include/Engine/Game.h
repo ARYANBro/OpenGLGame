@@ -1,12 +1,13 @@
 #pragma once
 
-#include "Math/MathTypes.h"
 #include "Window.h"
 #include "World.h"
 #include "Graphics/Renderer.h"
 #include "InputListener.h"
 #include "InputSystem.h"
 #include "DeltaTime.h"
+
+#include <glm/glm.hpp>
 
 #include <memory>
 
@@ -30,7 +31,9 @@ namespace Engine
 
         virtual void OnKeyDown(int key) override {}
         virtual void OnKeyUp(int key) override {}
-        virtual void OnMouseMove(const Math::Vector2& deltaMousePos) {}
+        virtual void OnMouseMove(const glm::vec2& deltaMousePos) {}
+        virtual void OnMouseButtonDown(int button) {}
+        virtual void OnMouseButtonUp(int button) {}
 
         template<typename LoggerType, typename... Args>
         void SetLogger(Args&&... args) { m_Logger.reset(new LoggerType(std::forward<Args>(args)... )); }

@@ -2,8 +2,7 @@
 
 #include "Component.h"
 
-#include "Math/Matrix4.h"
-#include "Math/Vector.h"
+#include <glm/glm.hpp>
 
 namespace Engine
 {
@@ -15,25 +14,14 @@ namespace Engine
             
         virtual ~TransformComponent() noexcept override = default;
 
-        void SetTranslation(const Math::Vector3& translation) noexcept { m_Translation = translation; }
-        void SetScale(const Math::Vector3& scale) noexcept { m_Scale = scale;}
-        void SetRotation(const Math::Vector3& rotation) noexcept { m_Rotation = rotation; }
+        void SetTranslation(const glm::vec3& translation) noexcept { m_Translation = translation; }
+        void SetScale(const glm::vec3& scale) noexcept { m_Scale = scale;}
+        void SetRotation(const glm::vec3& rotation) noexcept { m_Rotation = rotation; }
 
-        Math::Matrix4 GetTransform()
-        {
-            Math::Matrix4 translation;
-            translation.SetTranslation(m_Translation);
-
-            Math::Matrix4 scale;
-            scale.SetScale(m_Scale);
-
-            Math::Matrix4 rotation;
-            scale.SetRotation(m_Rotation);
-
-            return scale * rotation * translation;
-        }
-
+        glm::mat4 GetTransform();
     private:
-        Math::Vector3 m_Translation, m_Scale, m_Rotation;
+        glm::vec3 m_Translation;
+        glm::vec3 m_Scale;
+        glm::vec3 m_Rotation;
     };
 }

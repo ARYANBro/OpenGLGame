@@ -53,7 +53,7 @@ void Engine::Shader::SetSourceCode(const std::string& filePath)
     glCompileShader(m_ID);
 
     if (std::string error = CheckError(); !error.empty())
-        throw std::runtime_error("Shader Compile Error: " + filePath + " |: " + error);
+        throw ShaderCompileError("Shader Compile Error: " + filePath + " |: " + error);
 
     PRINT_INFO(filePath + " Shader compiled successfuly");
 }

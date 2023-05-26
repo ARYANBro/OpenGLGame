@@ -1,13 +1,21 @@
 #pragma once
 
+#include <glm/glm.hpp>
+
 #include <string>
+#include <stdexcept>
 
 #include <Windows.h>
 
-#include "Math/MathTypes.h"
-
 namespace Engine
 {
+    class WindowCreationError : public std::runtime_error
+    {
+    public:
+        WindowCreationError(const std::string& error) : std::runtime_error(error) {}
+        WindowCreationError(const char* error) : std::runtime_error(error) {}
+    };
+
     class Window
     {
     public:
@@ -18,14 +26,15 @@ namespace Engine
         void Init(const std::wstring& windowName, int width, int height);
 
         HWND GetHandle() const noexcept { return m_Handle; }
-        Math::Rectangle GetViewportSize();
+        glm::ivec2 GetViewportSize();
 
         void OnFocus();
         void OnLooseFocus();
 
     private:
         HWND m_Handle;  
-        int m_Width, m_Height;
+        int m_Width;
+        int m_Height;
     };
 }
 
